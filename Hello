@@ -1,0 +1,43 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() {
+  
+  lcd.begin(16,2);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+
+  
+}
+
+
+  int temperatura;
+  int humedad;
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+  temperatura = analogRead(A0);
+  humedad = analogRead(A1);
+
+  temperatura = temperatura*0.08;
+  humedad =  humedad*0.097;
+  
+  lcd.setCursor(0,0);
+  
+  lcd.print("Temperatura:");
+
+  lcd.print(temperatura);
+
+  lcd.print("C");
+  
+  lcd.setCursor(0,1);
+
+  lcd.print("Humedad:");
+
+  lcd.print(humedad);
+
+  lcd.print("%");
+  
+}
