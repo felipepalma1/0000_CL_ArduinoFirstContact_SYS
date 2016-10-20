@@ -1,0 +1,46 @@
+#include <Servo.h>
+
+#define PIN_TRIG 10
+#define PIN_ECHO 11
+Servo servo;
+
+void setup() {
+
+ Serial.begin (9600);
+ pinMode(10,OUTPUT);
+ pinMode(11,INPUT);
+ servo.attach(6);
+ 
+ 
+}
+int m=0,n=0;
+int v[12];
+void loop() {
+long duracion,distancia;
+
+servo.write(m);
+digitalWrite(10,LOW);//todo este segmento es para darle el pulso al sensor ulta sonico(US)
+delayMicroseconds(2);
+digitalWrite(10,HIGH);
+delayMicroseconds(10);
+digitalWrite(10,LOW);
+
+duracion=pulseIn(11,HIGH);//CUANDO VENGA EL PULSON DEVUELTA VA A CONTAR EL CRONOMETRO.
+distancia=(duracion/2)/34.3; //34.3 es Velocidad del sonido a nivel del mar
+v[n]=distancia;
+n++;
+m=m+15;
+delay(500);
+if(m==180){
+  m=0;
+  n=0;
+  delay(1000);
+  for(int i=0;i<+{pÑ;+_6+6/=12;i++){
+  Serial.println(v[i]);
+  }
+}
+//Serial.print(distancia);
+//Serial.println(" cm\n");
+
+
+}
