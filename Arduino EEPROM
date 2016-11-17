@@ -1,0 +1,30 @@
+#include <EEPROM.h>
+int c;
+
+
+void setup() {
+  
+  c = EEPROM.read(1);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, c);
+  delay(4000);
+  
+}
+
+void loop() {
+  c = c + 1;
+
+  if(c == 1){
+    digitalWrite(13, c);
+    EEPROM.write(1, c);
+    delay(1000);  
+  }
+
+  if(c > 1){
+    c = 0;
+    digitalWrite(13,c);
+    EEPROM.write(1,c);
+    delay(1000);  
+  }
+
+}
