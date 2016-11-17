@@ -1,0 +1,21 @@
+#include <SoftwareSerial.h>
+SoftwareSerial blue(2, 3);
+char lectura;
+void setup() {
+   Serial.begin(9600);
+   blue.begin(9600);
+   pinMode(13,OUTPUT);
+}
+
+void loop() {
+    if(blue.available()>0){
+      lectura = blue.read();
+      Serial.println(lectura);
+    }
+    if(lectura=='A'){
+      digitalWrite(13,HIGH);
+    }
+    if(lectura=='B'){
+      digitalWrite(13,LOW);
+    }
+}
