@@ -1,0 +1,79 @@
+#include <VirtualWire.h>
+#include "Wire.h"
+#include "I2Cdev.h"
+#include "MPU6050.h"
+
+
+MPU6050 mpu;
+
+int16_t ax, ay, az;
+int16_t gx, gy, gz;
+float x=0;
+int cx=0;
+float bx=0;
+float rx=0;
+float y=0;
+int cy=0;
+float by=0;
+float ry=0;
+float z=0;
+int cz=0;
+float bz=0;
+float rz=0;
+String strx;
+char a[5];
+char *Xenv;
+void setup()
+{
+  Wire.begin();
+  Serial.begin(9600);
+
+
+  Serial.println("Initialize MPU");
+  mpu.initialize();
+  Serial.println(mpu.testConnection() ? "Connected" : "Connection failed");
+    delay(1000);
+    vw_setup(5000);
+    vw_set_ptt_inverted(true); 
+vw_set_tx_pin(4);
+}
+
+void loop()
+{
+if(millis()<5000){
+  delay(5000);
+  for(int i=0; i<10000; i++){
+    mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+    bx=bx+gx;
+    by=by+gy;
+    bz=bz+gz;
+  }
+  bx=bx/10000;
+  by=by/10000;
+  bz=bz/10000;
+}
+
+  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  
+  x=x+gx-bx;
+  y=y+gy-by;
+  z=z+gz-bz;
+  cx=map(x, -750000, 750000, 0, 90);
+  cy=map(y, -750000, 750000, 0, 90);
+  cz=map(z, -750000, 750000, 0, 90);
+  //Serial.print(x);//arriba abajo
+  //Serial.print(" , ");
+ // Serial.print(y);
+  //Serial.print(" , ");
+  //Serial.println(z);//giro
+  int X=(cx);
+  int Y=(cy);
+  int env=X*100+Y;
+  strx=String(env);
+  strx.toCharArray(a,5);
+  Xenv=a;
+  Serial.println(Xenv);
+  vw_send((uint8_t *)Xenv, strlen(Xenv));
+            vw_wait_tx();
+            
+}
